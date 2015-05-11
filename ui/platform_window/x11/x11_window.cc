@@ -199,7 +199,7 @@ void X11Window::Show() {
   XSetWMNormalHints(xdisplay_, xwindow_, &size_hints);
 
   // TODO(sky): provide real scale factor.
-  delegate_->OnAcceleratedWidgetAvailable(xwindow_);
+  delegate_->OnAcceleratedWidgetAvailable(xwindow_, 1.f);
 
   XMapWindow(xdisplay_, xwindow_);
 

@@ -144,7 +144,8 @@ class PlatformViewportX11 : public PlatformViewport,
 
   void OnLostCapture() override {}
 
-  void OnAcceleratedWidgetAvailable(gfx::AcceleratedWidget widget) override {
+  void OnAcceleratedWidgetAvailable(gfx::AcceleratedWidget widget,
+                                    float device_pixel_ratio) override {
     delegate_->OnAcceleratedWidgetAvailable(widget);
   }
 
