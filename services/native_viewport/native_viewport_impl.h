@@ -39,10 +39,12 @@ class NativeViewportImpl : public mojo::NativeViewport,
  public:
   NativeViewportImpl(mojo::ApplicationImpl* application,
                      bool is_headless,
-                     const scoped_refptr<gles2::GpuState>& gpu_state,
                      mojo::InterfaceRequest<mojo::NativeViewport> request);
   ~NativeViewportImpl() override;
 
+  void SetGpuState(const scoped_refptr<gles2::GpuState>& gpu_state);
+  void InitPlatformViewport();
+  
   // NativeViewport implementation.
   void Create(mojo::SizePtr size,
               mojo::SurfaceConfigurationPtr requested_configuration,
@@ -73,13 +75,14 @@ class NativeViewportImpl : public mojo::NativeViewport,
   mojo::ApplicationImpl* application_;
   bool is_headless_;
   scoped_ptr<PlatformViewport> platform_viewport_;
-  OnscreenContextProvider context_provider_;
+  scoped_ptr<OnscreenContextProvider> context_provider_;
   bool sent_metrics_;
   mojo::ViewportMetricsPtr metrics_;
   CreateCallback create_callback_;
   RequestMetricsCallback metrics_callback_;
   mojo::NativeViewportEventDispatcherPtr event_dispatcher_;
   mojo::StrongBinding<mojo::NativeViewport> binding_;
+  gfx::SurfaceConfiguration requested_configuration_;
 
   // Set of pointer_ids we've sent a move to and are waiting on an ack.
   std::set<int32> pointers_waiting_on_ack_;

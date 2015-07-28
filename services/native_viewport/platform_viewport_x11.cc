@@ -46,7 +46,8 @@ class PlatformViewportX11 : public PlatformViewport,
   void Init(const gfx::Rect& bounds) override {
     CHECK(!event_source_);
     CHECK(!platform_window_);
-
+    LOG(INFO) << "Init " << bounds.ToString();
+    
     event_source_ = ui::PlatformEventSource::CreateDefault();
 
     metrics_ = mojo::ViewportMetrics::New();
@@ -54,6 +55,9 @@ class PlatformViewportX11 : public PlatformViewport,
 
     platform_window_.reset(new ui::X11Window(this));
     platform_window_->SetBounds(bounds);
+
+    // X11 window isn't actually created until Shown
+    Show();
   }
 
   void Show() override { platform_window_->Show(); }

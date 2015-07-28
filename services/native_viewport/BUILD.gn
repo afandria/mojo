@@ -63,6 +63,15 @@ if (is_android) {
       "//ui/events/platform",
       "//ui/gl",
     ]
+
+    if (use_ozone) {
+      deps += [
+        "//mojo/services/ozone_drm_gpu/public/interfaces",
+        "//mojo/services/ozone_drm_host/public/interfaces",
+        "//ui/events/ozone:events_ozone_evdev",
+        "//ui/ozone",
+      ]
+    }
   }
 }
 
@@ -104,6 +113,7 @@ source_set("lib") {
     "//ui/gfx/geometry",
     "//ui/gl",
     "//ui/platform_window",
+    "//ui/display/types",  
   ]
 
   if (is_android) {
@@ -120,8 +130,24 @@ source_set("lib") {
   }
 
   if (use_ozone) {
-    sources += [ "platform_viewport_ozone.cc" ]
-    deps += [ "//ui/ozone" ]
+    sources += [ 
+      "platform_viewport_ozone.cc",
+      "display_manager.cc",
+      "display_manager.h",
+      "ozone_drm_gpu_impl.cc",
+      "ozone_drm_gpu_impl.h",
+      "ozone_drm_host_impl.cc",
+      "ozone_drm_host_impl.h",
+    ]
+    deps += [
+      "//mojo/converters/ozone_drm_gpu",
+      "//mojo/services/ozone_drm_gpu/public/interfaces",
+      "//mojo/services/ozone_drm_host/public/interfaces",
+      "//ui/events/ozone:events_ozone_evdev",
+      "//ui/ozone",
+      "//ui/ozone:ozone_base",
+      "//ui/ozone/platform/drm:drm_common",
+    ]
   }
 
   if (is_win) {

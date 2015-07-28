@@ -26,6 +26,9 @@ struct SurfaceConfiguration {
 interface NativeViewport {
   // TODO(sky): having a create function is awkward. Should there be a factory
   // to create the NativeViewport that takes the size?
+  // When the viewport is created it is initially shown.
+  // Viewport creation may take some time and interfaces should not be called until the
+  // create callback has been received.
   Create(Size size, SurfaceConfiguration? requested_configuration) => (ViewportMetrics metrics);
 
   Show();

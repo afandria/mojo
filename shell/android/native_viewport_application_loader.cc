@@ -38,8 +38,9 @@ void NativeViewportApplicationLoader::Create(
     InterfaceRequest<mojo::NativeViewport> request) {
   if (!gpu_state_)
     gpu_state_ = new gles2::GpuState;
-  new native_viewport::NativeViewportImpl(app_.get(), false, gpu_state_,
-                                          request.Pass());
+  auto native_viewport = new native_viewport::NativeViewportImpl(
+    app_.get(), false, request.Pass());
+  native_viewport->SetGpuState(gpu_state_);
 }
 
 void NativeViewportApplicationLoader::Create(
