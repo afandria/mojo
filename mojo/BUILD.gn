@@ -40,7 +40,7 @@ group("mojo") {
     deps += [ "//mojo/go" ]
   }
 
-  if (is_linux) {
+  if (is_linux && !is_fnl) {
     deps += [ "//mojo/python" ]
   }
 
@@ -90,7 +90,7 @@ group("tests") {
     "//shell:apptests",
   ]
 
-  if (is_linux) {
+  if (is_linux && !is_fnl) {
     deps += [ "//services/python:python_apptests" ]
   }
 

@@ -26,7 +26,6 @@
  * $FreeBSD: head/sys/teken/teken.c 261551 2014-02-06 13:28:06Z ray $
  */
 
-#include <sys/cdefs.h>
 #if defined(__FreeBSD__) && defined(_KERNEL)
 #include <sys/param.h>
 #include <sys/lock.h>

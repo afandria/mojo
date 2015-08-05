@@ -22,7 +22,7 @@
 #if defined(__GLIBCXX__)
 #include <cxxabi.h>
 #endif
-#if !defined(__UCLIBC__)
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
 #include <execinfo.h>
 #endif
 
@@ -73,7 +73,7 @@ void DemangleSymbols(std::string* text) {
   // Note: code in this function is NOT async-signal safe (std::string uses
   // malloc internally).
 
-#if defined(__GLIBCXX__) && !defined(__UCLIBC__)
+#if defined(__GLIBCXX__) && !defined(__UCLIBC__) && !defined(FNL_MUSL)
 
   std::string::size_type search_from = 0;
   while (search_from < text->size()) {
@@ -110,7 +110,7 @@ void DemangleSymbols(std::string* text) {
     }
   }
 
-#endif  // defined(__GLIBCXX__) && !defined(__UCLIBC__)
+#endif  // defined(__GLIBCXX__) && !defined(__UCLIBC__) && !defined(FNL_MUSL)
 }
 #endif  // !defined(USE_SYMBOLIZE)
 
@@ -122,6 +122,7 @@ class BacktraceOutputHandler {
   virtual ~BacktraceOutputHandler() {}
 };
 
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
 void OutputPointer(void* pointer, BacktraceOutputHandler* handler) {
   // This should be more than enough to store a 64-bit number in hex:
   // 16 hex digits + 1 for null-terminator.
@@ -169,7 +170,7 @@ void ProcessBacktrace(void *const *trace,
 
     handler->HandleOutput("\n");
   }
-#elif !defined(__UCLIBC__)
+#elif !defined(__UCLIBC__) && !defined(FNL_MUSL)
   bool printed = false;
 
   // Below part is async-signal unsafe (uses malloc), so execute it only
@@ -198,6 +199,7 @@ void ProcessBacktrace(void *const *trace,
   }
 #endif  // defined(USE_SYMBOLIZE)
 }
+#endif
 
 void PrintToStderr(const char* output) {
   // NOTE: This code MUST be async-signal safe (it's used by in-process
@@ -738,7 +740,7 @@ StackTrace::StackTrace() {
   // NOTE: This code MUST be async-signal safe (it's used by in-process
   // stack dumping signal handler). NO malloc or stdio is allowed here.
 
-#if !defined(__UCLIBC__)
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
   // Though the backtrace API man page does not list any possible negative
   // return values, we take no chance.
   count_ = base::saturated_cast<size_t>(backtrace(trace_, arraysize(trace_)));
@@ -751,13 +753,13 @@ void StackTrace::Print() const {
   // NOTE: This code MUST be async-signal safe (it's used by in-process
   // stack dumping signal handler). NO malloc or stdio is allowed here.
 
-#if !defined(__UCLIBC__)
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
   PrintBacktraceOutputHandler handler;
   ProcessBacktrace(trace_, count_, &handler);
 #endif
 }
 
-#if !defined(__UCLIBC__)
+#if !defined(__UCLIBC__) && !defined(FNL_MUSL)
 void StackTrace::OutputToStream(std::ostream* os) const {
   StreamBacktraceOutputHandler handler(os);
   ProcessBacktrace(trace_, count_, &handler);

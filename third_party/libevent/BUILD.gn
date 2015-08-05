@@ -27,6 +27,7 @@ source_set("libevent") {
   } else if (is_linux) {
     sources += [ "epoll.c" ]
     include_dirs = [ "linux" ]
+    include_dirs += [ "compat" ]
     libs = [ "rt" ]
   } else if (is_android) {
     sources += [ "epoll.c" ]

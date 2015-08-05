@@ -142,7 +142,7 @@ HttpRequestParser::ParseResult HttpRequestParser::ParseHeaders() {
   MojoCreateDataPipeOptions options = {sizeof(MojoCreateDataPipeOptions),
                                        MOJO_CREATE_DATA_PIPE_OPTIONS_FLAG_NONE,
                                        1,
-                                       declared_content_length};
+                                       static_cast<uint32_t>(declared_content_length)};
   MojoResult result = CreateDataPipe(
       &options, &producer_handle_, &http_request_->body);
   if (result != MOJO_RESULT_OK) {

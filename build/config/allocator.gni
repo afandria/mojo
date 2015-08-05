@@ -3,7 +3,7 @@
 # found in the LICENSE file.
 
 # TODO(GYP): Make tcmalloc work on win.
-if (is_android || current_cpu == "mipsel" || is_mac || is_ios || is_asan ||
+if (is_fnl || is_android || current_cpu == "mipsel" || is_mac || is_ios || is_asan ||
     is_lsan || is_tsan || is_msan || is_win) {
   _default_allocator = "none"
 } else {

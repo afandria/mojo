@@ -21,6 +21,7 @@ class Config(object):
   OS_LINUX = "linux"
   OS_MAC = "mac"
   OS_WINDOWS = "windows"
+  OS_FNL = "fnl"
 
   # Valid values for target_cpu (None is also valid):
   ARCH_X86 = "x86"
@@ -45,7 +46,7 @@ class Config(object):
 
     assert target_os in (None, Config.OS_ANDROID, Config.OS_IOS,
                          Config.OS_LINUX, Config.OS_MAC,
-                         Config.OS_WINDOWS)
+                         Config.OS_WINDOWS, Config.OS_FNL)
     assert target_cpu in (None, Config.ARCH_X86, Config.ARCH_X64,
                            Config.ARCH_ARM)
     assert isinstance(is_debug, bool)

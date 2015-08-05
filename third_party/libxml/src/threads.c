@@ -47,8 +47,7 @@
 #ifdef HAVE_PTHREAD_H
 
 static int libxml_is_threaded = -1;
-#ifdef __GNUC__
-#ifdef linux
+#if defined(__GNUC__) && defined(linux) && !defined(FNL_MUSL)
 #if (__GNUC__ == 3 && __GNUC_MINOR__ >= 3) || (__GNUC__ > 3)
 extern int pthread_once (pthread_once_t *__once_control,
                          void (*__init_routine) (void))
@@ -88,8 +87,7 @@ extern int pthread_key_delete ()
 extern int pthread_cond_signal ()
 	   __attribute((weak));
 #endif
-#endif /* linux */
-#endif /* __GNUC__ */
+#endif /* __GNUC__, linux, FNL_MUSL */
 #endif /* HAVE_PTHREAD_H */
 
 /*

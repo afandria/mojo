@@ -50,7 +50,7 @@ group("examples") {
     deps += [ "//examples/go" ]
   }
 
-  if (is_linux) {
+  if (is_linux && !is_fnl) {
     deps += [ "//examples/python" ]
   }
 }

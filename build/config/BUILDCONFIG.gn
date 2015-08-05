@@ -162,6 +162,7 @@ if (current_os == "win") {
   is_nacl = false
   is_posix = false
   is_win = true
+  is_fnl = false
 } else if (current_os == "mac") {
   is_android = false
   is_chromeos = false
@@ -171,6 +172,7 @@ if (current_os == "win") {
   is_nacl = false
   is_posix = true
   is_win = false
+  is_fnl = false
 } else if (current_os == "android") {
   is_android = true
   is_chromeos = false
@@ -180,6 +182,7 @@ if (current_os == "win") {
   is_nacl = false
   is_posix = true
   is_win = false
+  is_fnl = false
 } else if (current_os == "chromeos") {
   is_android = false
   is_chromeos = true
@@ -189,6 +192,7 @@ if (current_os == "win") {
   is_nacl = false
   is_posix = true
   is_win = false
+  is_fnl = false
 } else if (current_os == "nacl") {
   # current_os == "nacl" will be passed by the nacl toolchain definition.
   # It is not set by default or on the command line. We treat is as a
@@ -201,6 +205,7 @@ if (current_os == "win") {
   is_nacl = true
   is_posix = true
   is_win = false
+  is_fnl = false
 } else if (current_os == "ios") {
   is_android = false
   is_chromeos = false
@@ -210,6 +215,7 @@ if (current_os == "win") {
   is_nacl = false
   is_posix = true
   is_win = false
+  is_fnl = false
 } else if (current_os == "linux") {
   is_android = false
   is_chromeos = false
@@ -219,6 +225,17 @@ if (current_os == "win") {
   is_nacl = false
   is_posix = true
   is_win = false
+  is_fnl = false
+} else if (current_os == "fnl") {
+  is_android = false
+  is_chromeos = false
+  is_ios = false
+  is_linux = true
+  is_mac = false
+  is_nacl = false
+  is_posix = true
+  is_win = false
+  is_fnl = true
 }
 
 # =============================================================================
@@ -380,7 +397,9 @@ if (is_posix) {
   ]
 }
 
-if (is_linux) {
+if (is_fnl) {
+  _native_compiler_configs += [ "//build/config/fnl:sdk" ]
+} else if (is_linux) {
   _native_compiler_configs += [ "//build/config/linux:sdk" ]
 } else if (is_mac) {
   _native_compiler_configs += [ "//build/config/mac:sdk" ]
@@ -553,6 +572,9 @@ if (is_win) {
   }
   if (is_chromeos && cros_use_custom_toolchain) {
     set_default_toolchain("//build/toolchain/cros:target")
+  }
+  if (is_fnl) {
+    set_default_toolchain("//build/toolchain/fnl:target")
   }
 } else if (is_mac) {
   host_toolchain = "//build/toolchain/mac:clang_x64"

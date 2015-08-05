@@ -56,7 +56,7 @@ source_set("trace_event") {
     ]
   }
 
-  if (is_linux || is_android) {
+  if ((is_linux && !is_fnl) || is_android) {
     sources += [
       "malloc_dump_provider.cc",
       "malloc_dump_provider.h",
